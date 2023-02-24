@@ -280,7 +280,7 @@ class Trainer:
             # ==========================================================================================
             raw_model = model.module if hasattr(self.model, "module") else model
             seqs, masks, seqlens, mmsis, time_starts = iter(aisdls["test"]).next()
-            n_plots = 7
+            n_plots = 8
             init_seqlen = INIT_SEQLEN
             seqs_init = seqs[:n_plots, :init_seqlen, :].to(self.device)
             preds = sample(raw_model,
@@ -303,6 +303,7 @@ class Trainer:
                     seqlen = seqlens[idx].item()
                 except:
                     continue
+                plt.subplot(4,2,idx+1)
                 plt.plot(inputs_np[idx][:init_seqlen, 1], inputs_np[idx][:init_seqlen, 0], color=c)
                 plt.plot(inputs_np[idx][:init_seqlen, 1], inputs_np[idx][:init_seqlen, 0], "o", markersize=3, color=c)
                 plt.plot(inputs_np[idx][:seqlen, 1], inputs_np[idx][:seqlen, 0], linestyle="-.", color=c)
