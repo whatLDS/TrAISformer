@@ -137,4 +137,4 @@ if __name__ == "__main__":
                                     r_vicinity=cf.r_vicinity,
                                     top_k=cf.top_k)
             inputs = seqs[:, :max_seqlen, :].to(cf.device)
-            plotPredit(preds,inputs,init_seqlen,it)
+            plotPredit(preds,inputs,init_seqlen,it,masks)

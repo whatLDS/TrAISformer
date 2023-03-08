@@ -43,7 +43,7 @@ LAT, LON, SOG, COG, HEADING, ROT, NAV_STT, TIMESTAMP, MMSI = list(range(9))
 
 FIG_W = 960
 FIG_H = int(960*LAT_RANGE/LON_RANGE) #533 #768
-def plotPredit(predics, inputs,init_seqlen,count):
+def plotPredit(predics, inputs,init_seqlen,count,masks):
     if not os.path.isdir(cf.haitudir):
         os.makedirs(cf.haitudir)
         print('======= Create directory to store trained models: ' + cf.haitudir)
@@ -84,8 +84,8 @@ def plotPredit(predics, inputs,init_seqlen,count):
 
     v_ranges = torch.tensor([LAT_RANGE, LON_RANGE, 0, 0]).to(cf.device)
     v_roi_min = torch.tensor([LAT_MIN, LON_MIN, 0, 0]).to(cf.device)
-    inputs = inputs*v_ranges + v_roi_min
-    predics = predics*v_ranges + v_roi_min
+    inputs = (inputs*v_ranges + v_roi_min)*masks
+    predics = (predics*v_ranges + v_roi_min)*masks
     preds_np = predics.detach().cpu().numpy()
     inputs_np = inputs.detach().cpu().numpy()
     img_path = os.path.join(cf.haitudir, f"{count}_haitu.png")
