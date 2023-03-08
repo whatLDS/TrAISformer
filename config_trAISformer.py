@@ -22,7 +22,7 @@ import torch
 
 
 class Config():
-    retrain = True
+    retrain = False
     tb_log = False
     device = torch.device("cuda:0")
 #     device = torch.device("cpu")
@@ -87,7 +87,7 @@ class Config():
     # model parameters
     #===================================================
     n_head = 8
-    n_layer = 8
+    n_layer = 4
     full_size = lat_size + lon_size + sog_size + cog_size
     n_embd = n_lat_embd + n_lon_embd + n_sog_embd + n_cog_embd
     # base GPT config, params common to all GPT versions
@@ -117,5 +117,5 @@ class Config():
         + f"-lr-{learning_rate}"\
         + f"-seqlen-{init_seqlen}-{max_seqlen}"
     savedir = "./results/"+filename+"/"
-    
+    haitudir = "./haitu/"+filename+"/"
     ckpt_path = os.path.join(savedir,"model.pt")   
