@@ -44,6 +44,12 @@ LAT, LON, SOG, COG, HEADING, ROT, NAV_STT, TIMESTAMP, MMSI = list(range(9))
 FIG_W = 960
 FIG_H = int(960*LAT_RANGE/LON_RANGE) #533 #768
 def plotPredit(predics, inputs,init_seqlen,count):
+    if not os.path.isdir(cf.haitudir):
+        os.makedirs(cf.haitudir)
+        print('======= Create directory to store trained models: ' + cf.haitudir)
+    else:
+        print('======= Directory to store trained models: ' + cf.haitudir)
+    utils.new_log(cf.haitudir, "log")
     coastline_filename = "./dma_coastline_polygons.pkl"
     coastline_filename = os.path.join(cf.datadir, coastline_filename)
     dict_list = []
@@ -82,6 +88,7 @@ def plotPredit(predics, inputs,init_seqlen,count):
     predics = predics*v_ranges + v_roi_min
     preds_np = predics.detach().cpu().numpy()
     inputs_np = inputs.detach().cpu().numpy()
+    img_path = os.path.join(cf.haitudir, f"{count}_haitu.png")
     for idx in range(1):
         c = cmap(float(idx) / (8))
         # plt.subplot(4,2,idx+1)
@@ -94,5 +101,5 @@ def plotPredit(predics, inputs,init_seqlen,count):
     plt.xlabel("Longitude")
     plt.ylabel("Latitude")
     plt.tight_layout()
-    plt.savefig(f"{count}_haitu.png")
-
+    plt.savefig(img_path)
+    plt.close()
